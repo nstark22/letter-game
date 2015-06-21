@@ -52,6 +52,7 @@ $(document).ready(function() {
   setInterval(function() {
     if ( (le.css('left') == "-75px") || (lea.css('left') == "-75px") || (leb.css('left') == "-75px") || (lec.css('left') == "-75px") || (led.css('left') == "-75px") ) {
       alert("Game over");
+       location.reload();
     }
   }, 500);
 });
