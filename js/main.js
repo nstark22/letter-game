@@ -1,5 +1,6 @@
 $(document).ready(function() {
   var score = 0;
+  var lastRow = 0;
   $(this).bind('keypress', function(e) {
     var key = String.fromCharCode((e.keyCode ? e.keyCode : e.charCode));
     if ( $('span').filter(function(){ return $(this).text() == key; })[0] ) {
@@ -8,13 +9,6 @@ $(document).ready(function() {
       $("#points").replaceWith( '<span id="points" class="typography score">'+ score +"</span>" )
     }      
   });
-
-  setInterval(function() {
-    var number = letter ();
-    var nrow = row ();
-    $( ".container" ).append( '<span class="typography row-' + nrow +'">'+ String.fromCharCode(number) +"</span>" );
-  },
-  1000);
 
   function moveletter(){
     le = $('.row-1')
@@ -41,10 +35,13 @@ $(document).ready(function() {
   var leb = $('.row-3')
   var lec = $('.row-4')
   var led = $('.row-5')
-  moveletter();
   setInterval(function() {
+    var number = letter ();
+    var nrow = row (lastRow);
+    lastRow = nrow;
+    $( ".container" ).append( '<span class="typography row-' + nrow +'">'+ String.fromCharCode(number) +"</span>" );
     moveletter();
-  }, 2000);
+  }, 1000);
 
   setInterval(function() {
     if ( (le.css('left') == "-75px") || (lea.css('left') == "-75px") || (leb.css('left') == "-75px") || (lec.css('left') == "-75px") || (led.css('left') == "-75px") ) {
@@ -58,6 +55,7 @@ function letter () {
 	var number = 1 + Math.floor(Math.random() * 122);
   return ((number > 96 && number < 122) || (number > 64 && number < 91)) ? number : letter();
 }
-function row () {
-	return 1 + Math.floor(Math.random() * 5);
+function row ( lastRow ) {
+  var rown = 1 + Math.floor(Math.random() * 5);
+  return ( rown != lastRow ) ? rown : row( lastRow );
 }
