@@ -1,21 +1,18 @@
 $(document).ready(function() {
-  var c = 0;
+  var score = 0;
   $(this).bind('keypress', function(e) {
     var key = String.fromCharCode((e.keyCode ? e.keyCode : e.charCode));
-    if ( $("span:contains('" + key + "')")) {
-      c = c + 1;
-      var id = $("span:contains('" + key + "')").attr("id");
-      $('#' + id).remove();
-      $("#points").replaceWith( '<span id="points" class="typography score">'+ c +"</span>" )
+    if ( $('span').filter(function(){ return $(this).text() == key; })[0] ) {
+      score = score +  1;
+      $('span').filter(function(){ return $(this).text() == key; })[0].remove();
+      $("#points").replaceWith( '<span id="points" class="typography score">'+ score +"</span>" )
     }      
   });
-      
-  var ne = 0;
+
   setInterval(function() {
     var number = letter ();
     var nrow = row ();
-    $( ".container" ).append( '<span id="e-'+ ne +'" class="typography row-' + nrow +'">'+ String.fromCharCode(number) +"</span>" );
-      ne = ne + 1;
+    $( ".container" ).append( '<span class="typography row-' + nrow +'">'+ String.fromCharCode(number) +"</span>" );
   },
   1000);
 
