@@ -13,7 +13,12 @@ $(document).ready(function() {
 
   function moveletter(){
     $( ".letter" ).css('left', startPos);
-    $( ".letter" ).animate({left: -75}, 7000, 'linear') 
+    $( ".letter" ).animate({left: -75}, 7000, 'linear', function() {
+      if ($( this ).css('left') == "-75px") {
+        alert("Game over");
+        location.reload();
+      }
+    }) 
   };
 
   var screenWidth = $(document).width();
@@ -26,21 +31,6 @@ $(document).ready(function() {
     $( ".container" ).append( '<span class="typography letter" style="top:'+ top +'">'+ String.fromCharCode(number) +"</span>" );
     moveletter();
   }, 1000);
-
-  setInterval(function() {
-    if ($( ".letter" ).css('left') == "-75px") {
-      alert("Game over");
-      location.reload();
-    }
-    // a = $.map( $( ".letter" ), function(  value, index ) {
-    //    return $(value).css('left');
-    //  });
-    // if ( $.inArray("-75px", a) > -1  ) {
-
-    //   alert("Game over");
-    //   location.reload();
-    // }
-  }, 500);
 });
 
 function letter () {
