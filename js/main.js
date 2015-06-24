@@ -1,6 +1,7 @@
 $(document).ready(function() {
   var score = 0;
-  var lastRow = 0;
+  var lastTop = "";
+
   $(this).bind('keypress', function(e) {
     var key = String.fromCharCode((e.keyCode ? e.keyCode : e.charCode));
     if ( $('span').filter(function(){ return $(this).text() == key; })[0] ) {
@@ -11,43 +12,34 @@ $(document).ready(function() {
   });
 
   function moveletter(){
-    le = $('.row-1')
-    lea = $('.row-2')
-    leb = $('.row-3')
-    lec = $('.row-4')
-    led= $('.row-5')
-    le.css('left', startPos);
-    le.animate({left: -75}, 7000, 'linear')
-    lea.css('left', startPos);
-    lea.animate({left: -75}, 7000, 'linear')
-    leb.css('left', startPos);
-    leb.animate({left: -75}, 7000, 'linear')
-    lec.css('left', startPos);
-    lec.animate({left: -75}, 7000, 'linear')
-    led.css('left', startPos);
-    led.animate({left: -75}, 7000, 'linear')   
+    $( ".letter" ).css('left', startPos);
+    $( ".letter" ).animate({left: -75}, 7000, 'linear') 
   };
 
   var screenWidth = $(document).width();
   var startPos = screenWidth;
-  var le = $('.row-1')
-  var lea = $('.row-2')
-  var leb = $('.row-3')
-  var lec = $('.row-4')
-  var led = $('.row-5')
+ 
   setInterval(function() {
     var number = letter ();
-    var nrow = row (lastRow);
-    lastRow = nrow;
-    $( ".container" ).append( '<span class="typography row-' + nrow +'">'+ String.fromCharCode(number) +"</span>" );
+    var top = row (lastTop);
+    lastTop = top;
+    $( ".container" ).append( '<span class="typography letter" style="top:'+ top +'">'+ String.fromCharCode(number) +"</span>" );
     moveletter();
   }, 1000);
 
   setInterval(function() {
-    if ( (le.css('left') == "-75px") || (lea.css('left') == "-75px") || (leb.css('left') == "-75px") || (lec.css('left') == "-75px") || (led.css('left') == "-75px") ) {
+    if ($( ".letter" ).css('left') == "-75px") {
       alert("Game over");
-       location.reload();
+      location.reload();
     }
+    // a = $.map( $( ".letter" ), function(  value, index ) {
+    //    return $(value).css('left');
+    //  });
+    // if ( $.inArray("-75px", a) > -1  ) {
+
+    //   alert("Game over");
+    //   location.reload();
+    // }
   }, 500);
 });
 
@@ -55,7 +47,10 @@ function letter () {
 	var number = 1 + Math.floor(Math.random() * 122);
   return ((number > 96 && number < 122) || (number > 64 && number < 91)) ? number : letter();
 }
-function row ( lastRow ) {
-  var rown = 1 + Math.floor(Math.random() * 5);
-  return ( rown != lastRow ) ? rown : row( lastRow );
+
+function row ( lastTop) {
+  var tops = ['15%','30%','45%','60%','75%']
+  var top = tops[Math.floor(Math.random()*tops.length)];
+  //return ( top != lastTop ) ? top : row( lastTop );
+  return top;
 }
