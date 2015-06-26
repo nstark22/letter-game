@@ -1,37 +1,65 @@
-$(document).ready(function() {
+window.onload = function() {
   var score = 0;
   var lastTop = "";
+  var newLetter = null;
+  var speed = 100;
+  var speedManager = 0;
 
-  $(this).bind('keypress', function(e) {
+  document.addEventListener("keypress", function(e) {
     var key = String.fromCharCode((e.keyCode ? e.keyCode : e.charCode));
-    if ( $('span').filter(function(){ return $(this).text() == key; })[0] ) {
+    var allLetters = Array.prototype.slice.call(document.getElementsByTagName('span'));
+    var allLettersTexts = allLetters.filter(function(letter){ return letter.innerHTML === key; })
+
+    if ( allLettersTexts[0] ) {
       score = score +  1;
-      $('span').filter(function(){ return $(this).text() == key; })[0].remove();
-      $("#points").replaceWith( '<span id="points" class="typography score">'+ score +"</span>" )
-    }      
+      speedManager = speedManager + 1;
+      if ( speedManager == 10 ) {
+        debugger
+        speedManager = 0;
+        speed = speed - 10;
+      }
+
+      allLettersTexts[0].remove();
+      var points = document.getElementById("points"), pointsParent = points.parentNode;
+      var newPoints = document.createElement("span");
+      newPoints.id = "points";
+      newPoints.className ="typography score";
+      newPoints.innerHTML = score;
+
+      pointsParent.replaceChild(newPoints, points);
+    }
   });
 
-  function moveletter(){
-    $( ".letter" ).css('left', startPos);
-    $( ".letter" ).animate({left: -75}, 7000, 'linear', function() {
-      if ($( this ).css('left') == "-75px") {
+  function moveLetter() {
+    letters = document.getElementsByClassName("letter");
+    for(var i = 0; i < letters.length; i++) {
+      letters[i].style.left = parseInt(letters[i].style.left)-1+'px';
+      if(letters[i].style.left =='-75px'){
         alert("Game over");
         location.reload();
       }
-    }) 
-  };
+    }
+    setTimeout(moveLetter,speed);
+  }
 
-  var screenWidth = $(document).width();
-  var startPos = screenWidth;
- 
   setInterval(function() {
     var number = letter ();
     var top = row (lastTop);
     lastTop = top;
-    $( ".container" ).append( '<span class="typography letter" style="top:'+ top +'">'+ String.fromCharCode(number) +"</span>" );
-    moveletter();
+
+    var container = document.getElementById("container");
+    var startPos = window.innerWidth;
+
+    newLetter = document.createElement("span");
+    newLetter.className = "typography letter";
+    newLetter.style.top = top;
+    newLetter.style.left = startPos +'px';
+    newLetter.innerHTML = String.fromCharCode(number);
+
+    container.appendChild(newLetter);
+    moveLetter();
   }, 1000);
-});
+};
 
 function letter () {
 	var number = 1 + Math.floor(Math.random() * 122);

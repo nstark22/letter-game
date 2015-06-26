@@ -26,9 +26,3 @@ body, html {
   display: inline-blocks;
   position: relative;
 }
-
-.row-1 { top: 15%; }
-.row-2 { top: 30%; }
-.row-3 { top: 45%; }
-.row-4 { top: 60%; }
-.row-5 { top: 75%; }  
